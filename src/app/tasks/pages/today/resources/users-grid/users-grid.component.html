@@ -1,1 +1,27 @@
 <p>users-grid works!</p>
+<table class="c-usersGrid__table">
+  <thead>
+    <tr>
+      <th>Volunters</th>
+      <th>Area</th>
+      <th>08-09</th>
+      <th>09-10</th>
+      <th>10-11</th>
+      <th>11-12</th>
+      <th>12-13</th>
+      <th>13-14</th>
+      <th>14-15</th>
+      <th>15-16</th>
+      <th>16-17</th>
+      <th>17-18</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let user of users">
+      <td class="c-usersGrid__cell c-usersGrid__userName">{{ user.name }}</td>
+      <td class="c-usersGrid__cell c-usersGrid__area">{{ user.areas }}</td>
+      <td class="c-usersGrid__cell" colspan="10"></td>
+      <td></td>
+    </tr>
+  </tbody>
+</table>

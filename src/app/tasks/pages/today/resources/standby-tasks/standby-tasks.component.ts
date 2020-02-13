@@ -1,15 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { Task } from 'src/app/core/models/task/task';
 
 @Component({
-  selector: 'app-standby-tasks',
+  selector: 'standby-tasks',
   templateUrl: './standby-tasks.component.html',
-  styleUrls: ['./standby-tasks.component.scss']
+  styleUrls: ['./standby-tasks.component.scss'],
+  host: { class: 'c-standbyTasks' }
 })
 export class StandbyTasksComponent implements OnInit {
+  @Input() tasks: Task[] = [];
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit(): void {
-  }
-
+  ngOnInit(): void {}
 }

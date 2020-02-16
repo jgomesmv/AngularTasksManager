@@ -1,4 +1,24 @@
-<p>users-grid works!</p>
+<div>
+  <div
+    id="pendingTasks"
+    cdkDropList
+    [cdkDropListData]="pendingTasks"
+    [cdkDropListConnectedTo]="pendingTasksConnectedTo"
+    cdkDropListSortingDisabled
+    class="c-usersGrid__pendingTasksList"
+    (cdkDropListDropped)="drop($event)"
+    [cdkDropListEnterPredicate]="noReturnPredicate"
+  >
+    <div
+      class="c-usersGrid__task"
+      *ngFor="let task of pendingTasks"
+      [cdkDragData]="task"
+      cdkDrag
+    >
+      {{ task.name }}
+    </div>
+  </div>
+</div>
 <table class="c-usersGrid__table">
   <thead>
     <tr>
@@ -20,8 +40,27 @@
     <tr *ngFor="let user of users">
       <td class="c-usersGrid__cell c-usersGrid__userName">{{ user.name }}</td>
       <td class="c-usersGrid__cell c-usersGrid__area">{{ user.areas }}</td>
-      <td class="c-usersGrid__cell" colspan="10"></td>
-      <td></td>
+      <td colspan="10">
+        <div
+          id="{{ user.id }}_userTasks"
+          cdkDropList
+          [cdkDropListData]="user.tasks"
+          [cdkDropListConnectedTo]="pendingTasksConnectedTo"
+          cdkDropListSortingDisabled
+          class="c-usersGrid__userTasksList"
+          (cdkDropListDropped)="drop($event)"
+          [cdkDropListEnterPredicate]="evenPredicate"
+        >
+          <div
+            class="c-usersGrid__task"
+            *ngFor="let task of user.tasks"
+            cdkDrag
+            [cdkDragData]="task"
+          >
+            {{ task.name }}
+          </div>
+        </div>
+      </td>
     </tr>
   </tbody>
 </table>

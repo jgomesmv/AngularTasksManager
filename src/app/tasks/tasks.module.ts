@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 import { TasksRoutingModule } from './tasks-routing.module';
 import { TodayPage } from './pages/today/today.page';
@@ -8,7 +9,7 @@ import { StandbyTasksComponent } from './pages/today/resources/standby-tasks/sta
 
 @NgModule({
   declarations: [TodayPage, UsersGridComponent, StandbyTasksComponent],
-  imports: [CommonModule, TasksRoutingModule],
+  imports: [CommonModule, TasksRoutingModule, DragDropModule],
   exports: [UsersGridComponent]
 })
 export class TasksModule {}

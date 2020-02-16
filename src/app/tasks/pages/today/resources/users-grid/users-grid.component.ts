@@ -2,7 +2,13 @@ import { Component, OnInit, Input } from '@angular/core';
 import { UserDataSource } from 'src/app/core/data-sources/user-data-source/user.data-source';
 import { User } from 'src/app/core/models/user/user';
 import _ from 'lodash';
-import { CdkDragDrop, moveItemInArray, transferArrayItem, CdkDrag } from '@angular/cdk/drag-drop';
+import {
+  CdkDragDrop,
+  moveItemInArray,
+  transferArrayItem,
+  CdkDrag
+} from '@angular/cdk/drag-drop';
+import * as moment from 'moment';
 import { Task } from 'src/app/core/models/task/task';
 
 @Component({
@@ -23,17 +29,25 @@ export class UsersGridComponent implements OnInit {
   constructor() {}
 
   ngOnInit(): void {
-    this.pendingTasksConnectedTo = this.users.map(user => `${user.id}_userTasks`);
+    this.pendingTasksConnectedTo = this.users.map(
+      user => `${user.id}_userTasks`
+    );
   }
 
   drop(event: CdkDragDrop<any>) {
     if (event.previousContainer === event.container) {
-      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+      moveItemInArray(
+        event.container.data,
+        event.previousIndex,
+        event.currentIndex
+      );
     } else {
-      transferArrayItem(event.previousContainer.data,
-                        event.container.data,
-                        event.previousIndex,
-                        event.currentIndex);
+      transferArrayItem(
+        event.previousContainer.data,
+        event.container.data,
+        event.previousIndex,
+        event.currentIndex
+      );
     }
   }
 
@@ -45,5 +59,34 @@ export class UsersGridComponent implements OnInit {
   /** Predicate function that doesn't allow items to be dropped into a list. */
   noReturnPredicate() {
     return false;
+  }
+
+  taskLeftPosition(task: Task) {
+    const dayStarts = '08:00';
+
+    const position = this.getDurationPercentage(dayStarts, task.startsAt);
+
+    return position;
+  }
+
+  taskWidth(task: Task) {
+    const  width = this.getDurationPercentage(task.startsAt, task.endsAt);
+    return width;
+  }
+
+  taskLength(task: Task) {
+
+  }
+
+  getDurationPercentage(start: string, end: string): string {
+    const startsAt = moment(start, 'HH:mm');
+    const endsAt = moment(end, 'HH:mm');
+
+    const duration = moment.duration(endsAt.diff(startsAt));
+    const durationMinutes = duration.asMinutes();
+    const dayDurationMinutes = 600;
+    const durationPercentage = (durationMinutes / dayDurationMinutes) * 100;
+
+    return `${durationPercentage}%`;
   }
 }

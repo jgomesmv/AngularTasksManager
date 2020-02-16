@@ -46,16 +46,17 @@
           cdkDropList
           [cdkDropListData]="user.tasks"
           [cdkDropListConnectedTo]="pendingTasksConnectedTo"
-          cdkDropListSortingDisabled
           class="c-usersGrid__userTasksList"
           (cdkDropListDropped)="drop($event)"
           [cdkDropListEnterPredicate]="evenPredicate"
         >
           <div
-            class="c-usersGrid__task"
+            class="c-usersGrid__task c-usersGrid__task--userTask"
             *ngFor="let task of user.tasks"
             cdkDrag
             [cdkDragData]="task"
+            [style.left]="taskLeftPosition(task)"
+            [style.width]="taskWidth(task)"
           >
             {{ task.name }}
           </div>

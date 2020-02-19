@@ -20,6 +20,7 @@ export class TodayPage implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.userDataSource.connect().subscribe(
       users => {
+        // .filter(user => user.name === 'John 0.1qf7ta2kwkr')
         this.users = users;
       },
       error => {

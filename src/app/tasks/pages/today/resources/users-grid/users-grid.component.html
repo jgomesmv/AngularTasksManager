@@ -1,20 +1,19 @@
 <div>
-  <div
-    id="pendingTasks"
-    cdkDropList
-    [cdkDropListData]="pendingTasks"
-    [cdkDropListConnectedTo]="pendingTasksConnectedTo"
-    cdkDropListSortingDisabled
-    class="c-usersGrid__pendingTasksList"
-    (cdkDropListDropped)="drop($event)"
-    [cdkDropListEnterPredicate]="noReturnPredicate"
-  >
+  <div id="pendingTasks" class="c-usersGrid__pendingTasksList">
     <div
-      class="c-usersGrid__task"
+      class="c-usersGrid__task c-usersGrid__task--pending"
       *ngFor="let task of pendingTasks"
       [cdkDragData]="task"
       cdkDrag
     >
+
+    <!-- cdkDropList
+    [cdkDropListData]="pendingTasks"
+    [cdkDropListConnectedTo]="pendingTasksConnectedTo"
+    cdkDropListSortingDisabled
+    (cdkDropListDropped)="drop($event)"
+    [cdkDropListEnterPredicate]="noReturnPredicate" -->
+
       {{ task.name }}
     </div>
   </div>
@@ -22,18 +21,18 @@
 <table class="c-usersGrid__table">
   <thead>
     <tr>
-      <th>Volunters</th>
-      <th>Area</th>
-      <th>08-09</th>
-      <th>09-10</th>
-      <th>10-11</th>
-      <th>11-12</th>
-      <th>12-13</th>
-      <th>13-14</th>
-      <th>14-15</th>
-      <th>15-16</th>
-      <th>16-17</th>
-      <th>17-18</th>
+      <th class="c-usersGrid__cell c-usersGrid__cell--header">Volunters</th>
+      <th class="c-usersGrid__cell c-usersGrid__cell--header">Area</th>
+      <th class="c-usersGrid__cell c-usersGrid__cell--header">08-09</th>
+      <th class="c-usersGrid__cell c-usersGrid__cell--header">09-10</th>
+      <th class="c-usersGrid__cell c-usersGrid__cell--header">10-11</th>
+      <th class="c-usersGrid__cell c-usersGrid__cell--header">11-12</th>
+      <th class="c-usersGrid__cell c-usersGrid__cell--header">12-13</th>
+      <th class="c-usersGrid__cell c-usersGrid__cell--header">13-14</th>
+      <th class="c-usersGrid__cell c-usersGrid__cell--header">14-15</th>
+      <th class="c-usersGrid__cell c-usersGrid__cell--header">15-16</th>
+      <th class="c-usersGrid__cell c-usersGrid__cell--header">16-17</th>
+      <th class="c-usersGrid__cell c-usersGrid__cell--header">17-18</th>
     </tr>
   </thead>
   <tbody>
@@ -41,24 +40,21 @@
       <td class="c-usersGrid__cell c-usersGrid__userName">{{ user.name }}</td>
       <td class="c-usersGrid__cell c-usersGrid__area">{{ user.areas }}</td>
       <td colspan="10">
-        <div
-          id="{{ user.id }}_userTasks"
-          cdkDropList
+        <div id="{{ user.id }}_userTasks" class="c-usersGrid__userTasksList">
+          <!-- cdkDropList
           [cdkDropListData]="user.tasks"
           [cdkDropListConnectedTo]="pendingTasksConnectedTo"
-          class="c-usersGrid__userTasksList"
           (cdkDropListDropped)="drop($event)"
-          [cdkDropListEnterPredicate]="evenPredicate"
-        >
+          [cdkDropListEnterPredicate]="evenPredicate" -->
           <div
-            class="c-usersGrid__task c-usersGrid__task--userTask"
-            *ngFor="let task of user.tasks"
-            cdkDrag
-            [cdkDragData]="task"
-            [style.left]="taskLeftPosition(task)"
-            [style.width]="taskWidth(task)"
+            *ngFor="let gridItem of mapTasks(user.tasks)"
+            [ngStyle]="getGridItemStyles(gridItem)"
+            class="c-usersGrid__task c-usersGrid__task--user"
           >
-            {{ task.name }}
+            <!-- cdkDrag
+            [cdkDragData]="gridItem.data"
+            [cdkDragDisabled]="gridItem.type === GridItemType.timeGap ? '' : null" -->
+            {{ gridItem.text }}
           </div>
         </div>
       </td>

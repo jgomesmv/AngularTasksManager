@@ -8,8 +8,10 @@ import {
   transferArrayItem,
   CdkDrag
 } from '@angular/cdk/drag-drop';
-import * as moment from 'moment';
 import { Task } from 'src/app/core/models/task/task';
+import { GridItem } from 'src/app/tasks/models/grid-item';
+import { UserGridHelper } from 'src/app/tasks/helpers/user-grid-helper';
+import { GridItemType } from 'src/app/tasks/enums/grid-item-type.enum';
 
 @Component({
   selector: 'users-grid',
@@ -22,9 +24,6 @@ export class UsersGridComponent implements OnInit {
   @Input() pendingTasks: Task[] = [];
 
   pendingTasksConnectedTo = [];
-
-  hours = _.range(8, 18, 1);
-  minutes = _.range(1, 60, 1);
 
   constructor() {}
 
@@ -61,32 +60,23 @@ export class UsersGridComponent implements OnInit {
     return false;
   }
 
-  taskLeftPosition(task: Task) {
-    const dayStarts = '08:00';
-
-    const position = this.getDurationPercentage(dayStarts, task.startsAt);
-
-    return position;
+  mapTasks(tasks: Task[]): GridItem[] {
+    console.log(UserGridHelper.getUserGridItems(tasks));
+    return UserGridHelper.getUserGridItems(tasks);
   }
 
-  taskWidth(task: Task) {
-    const  width = this.getDurationPercentage(task.startsAt, task.endsAt);
-    return width;
+
+
+  getGridItemStyles(gridItem: GridItem): any {
+    const styles = {
+      width: gridItem.width,
+      height: gridItem.height ? gridItem.height : '100%'
+    };
+
+    return styles;
   }
 
-  taskLength(task: Task) {
-
-  }
-
-  getDurationPercentage(start: string, end: string): string {
-    const startsAt = moment(start, 'HH:mm');
-    const endsAt = moment(end, 'HH:mm');
-
-    const duration = moment.duration(endsAt.diff(startsAt));
-    const durationMinutes = duration.asMinutes();
-    const dayDurationMinutes = 600;
-    const durationPercentage = (durationMinutes / dayDurationMinutes) * 100;
-
-    return `${durationPercentage}%`;
+  get GridItemType() {
+    return GridItemType;
   }
 }

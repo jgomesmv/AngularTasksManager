@@ -9,6 +9,8 @@ export class User {
   tasks: Task[];
 
   constructor(data) {
+    data.tasks = data.tasks.map(task => new Task(task));
+
     Object.assign(this, data);
   }
 }

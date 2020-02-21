@@ -1,4 +1,4 @@
-export enum GridItemType {
+export enum GridTimelineItemType {
   task,
   timeGap
 }

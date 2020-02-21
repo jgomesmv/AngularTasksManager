@@ -1,12 +1,10 @@
-import { GridItemType } from '../enums/grid-item-type.enum';
-import { Task } from 'src/app/core/models/task/task';
+import { GridTimelineItem } from './grid-timeline-item';
 
 export class GridItem {
-  text: string;
-  width: string;
-  height: string;
-  type: GridItemType;
-  data: Task;
+  id: string;
+  name: string;
+  areas: string[];
+  gridTimelineItems: GridTimelineItem[];
 
   constructor(data) {
     Object.assign(this, data);

@@ -2,16 +2,15 @@ import moment from 'moment';
 import _ from 'lodash';
 
 import { Task } from 'src/app/core/models/task/task';
-import { TaskTimelineType } from 'src/app/tasks/enums/task-timeline-type';
-import { GridItem } from '../models/grid-item';
-import { GridItemType } from '../enums/grid-item-type.enum';
+import { GridTimelineItem } from '../models/grid-timeline-item';
+import { GridTimelineItemType } from '../enums/grid-item-type.enum';
 
 export class UserGridHelper {
-  static getUserGridItems(tasks: Task[]): GridItem[] {
+  static getUserGridTimelineItems(tasks: Task[]): GridTimelineItem[] {
     const tasksByStartsAtAsc: Task[] = _.orderBy(
       tasks,
       (task: Task) => {
-        return task.startsAt.toDate();
+        return task.endsAt.toDate();
       },
       ['asc']
     );
@@ -23,9 +22,9 @@ export class UserGridHelper {
       },
       ['asc']
     );
-    const lastTask = tasksByEndsAtAsc.length ? tasksByEndsAtAsc.pop() : null;
+    const lastTask = _.last(tasksByEndsAtAsc);
 
-    const userGridItems: GridItem[] = [];
+    const userGridItems: GridTimelineItem[] = [];
     for (const task of tasksByStartsAtAsc) {
       const numberOfCrossTasks = this.getNumberOfCrossTasks(task, tasks);
       const heightPercentage = `${100 / (numberOfCrossTasks || 1)}%`;
@@ -33,36 +32,36 @@ export class UserGridHelper {
       const timeLeftBefore = this.getTimeLeftBefore(task, tasks);
       const timeLeftBeforeMinutes = timeLeftBefore.asMinutes();
       if (timeLeftBeforeMinutes > 0) {
-        const gridItemBefore = new GridItem({
-          text: timeLeftBefore.humanize(),
+        const gridItemBefore = new GridTimelineItem({
+          name: timeLeftBefore.humanize(),
           width: this.getDurationPercentage(timeLeftBeforeMinutes),
           height: null,
-          type: GridItemType.timeGap,
+          type: GridTimelineItemType.timeGap,
           data: null
         });
 
         userGridItems.push(gridItemBefore);
       }
 
-      const gridItemTask = new GridItem({
-        text: task.name,
+      const gridItemTask = new GridTimelineItem({
+        name: task.name,
         width: this.getDurationPercentageBySartEnd(task.startsAt, task.endsAt),
         height: heightPercentage,
-        type: GridItemType.task,
+        type: GridTimelineItemType.task,
         data: task
       });
 
       userGridItems.push(gridItemTask);
 
-      if (task.name === lastTask.name) {
-        const timeLeftAfter = this.getTimeLeftAfter(task, tasks);
+      if (lastTask && task.name === lastTask.name) {
+        const timeLeftAfter = this.getTimeLeftAfter(task);
         const timeLeftAfterMinutes = timeLeftAfter.asMinutes();
         if (timeLeftAfterMinutes > 0) {
-          const gridItemBefore = new GridItem({
-            text: timeLeftAfter.humanize(),
+          const gridItemBefore = new GridTimelineItem({
+            name: timeLeftAfter.humanize(),
             width: this.getDurationPercentage(timeLeftAfterMinutes),
             height: null,
-            type: GridItemType.timeGap,
+            type: GridTimelineItemType.timeGap,
             data: null
           });
 
@@ -87,8 +86,8 @@ export class UserGridHelper {
     ).filter(task => task.endsAt.isSameOrBefore(currentTask.startsAt));
 
     let timeLeftBefore = moment.duration(0);
-    if (previousTasks.length > 0) {
-      const previousTask = previousTasks.pop();
+    if (previousTasks && previousTasks.length > 0) {
+      const previousTask = _.last(previousTasks);
       timeLeftBefore = moment.duration(
         currentTask.startsAt.diff(previousTask.endsAt)
       );
@@ -100,28 +99,10 @@ export class UserGridHelper {
     return timeLeftBefore;
   }
 
-  private static getTimeLeftAfter(
-    currentTask: Task,
-    tasks: Task[]
-  ): moment.Duration {
-    const afterTasks = _.orderBy(
-      tasks,
-      (task: Task) => {
-        return task.startedAt.toDate();
-      },
-      ['asc']
-    ).filter(task => task.startedAt.isAfter(currentTask.endsAt));
-
+  private static getTimeLeftAfter(currentTask: Task): moment.Duration {
     let timeLeftAfter = moment.duration(0);
-    if (afterTasks.length > 0) {
-      const afterTask = afterTasks.pop();
-      timeLeftAfter = moment.duration(
-        currentTask.endsAt.diff(afterTask.startsAt)
-      );
-    } else {
-      const dayEndTime = moment('18:00', 'HH:mm');
-      timeLeftAfter = moment.duration(dayEndTime.diff(currentTask.endsAt));
-    }
+    const dayEndTime = moment('18:00', 'HH:mm');
+    timeLeftAfter = moment.duration(dayEndTime.diff(currentTask.endsAt));
 
     return timeLeftAfter;
   }
@@ -143,15 +124,23 @@ export class UserGridHelper {
     return `${durationPercentage}`;
   }
 
-  private static getNumberOfCrossTasks(currentTask: Task, tasks: Task[]) {
-    const crossTasks = tasks.filter(
-      task =>
-        (task.startsAt.isBefore(currentTask.startsAt) &&
-          task.endsAt.isAfter(currentTask.endsAt)) ||
-        task.startsAt.isBetween(currentTask.startsAt, currentTask.endsAt) ||
-        task.endsAt.isBetween(currentTask.startsAt, currentTask.endsAt)
-    );
+  private static getNumberOfCrossTasks(currentTask: Task, tasks: Task[], sum: number = 0) {
+    const tasksToCheck = tasks.filter(task => task.name !== currentTask.name);
+    for (const task of tasksToCheck) {
+      if (this.datesCross(task, currentTask)) {
+        sum = sum + 1;
+        this.getNumberOfCrossTasks(task, tasksToCheck, sum);
+      }
+    }
+    return sum;
+  }
 
-    return crossTasks.length;
+  private static datesCross(task: Task, taskCheck: Task): boolean {
+    return (
+      (task.startsAt.isSameOrBefore(taskCheck.startsAt) &&
+        task.endsAt.isSameOrAfter(taskCheck.endsAt)) ||
+      task.startsAt.isBetween(taskCheck.startsAt, taskCheck.endsAt) ||
+      task.endsAt.isBetween(taskCheck.startsAt, taskCheck.endsAt)
+    );
   }
 }

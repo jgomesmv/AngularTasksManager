@@ -11,7 +11,8 @@ import {
 import { Task } from 'src/app/core/models/task/task';
 import { GridItem } from 'src/app/tasks/models/grid-item';
 import { UserGridHelper } from 'src/app/tasks/helpers/user-grid-helper';
-import { GridItemType } from 'src/app/tasks/enums/grid-item-type.enum';
+import { GridTimelineItemType } from 'src/app/tasks/enums/grid-item-type.enum';
+import { GridTimelineItem } from 'src/app/tasks/models/grid-timeline-item';
 
 @Component({
   selector: 'users-grid',
@@ -20,17 +21,15 @@ import { GridItemType } from 'src/app/tasks/enums/grid-item-type.enum';
   host: { class: 'c-usersGrid' }
 })
 export class UsersGridComponent implements OnInit {
-  @Input() users: User[] = [];
-  @Input() pendingTasks: Task[] = [];
+  @Input() gridItems: GridItem[] = [];
+  @Input() pendingTimelineItems: GridTimelineItem[] = [];
 
-  pendingTasksConnectedTo = [];
+  gridItemsConnectedTo = [];
 
   constructor() {}
 
   ngOnInit(): void {
-    this.pendingTasksConnectedTo = this.users.map(
-      user => `${user.id}_userTasks`
-    );
+    this.gridItemsConnectedTo = this.gridItems.map(g => `${g.name}_gridItems`);
   }
 
   drop(event: CdkDragDrop<any>) {
@@ -41,12 +40,11 @@ export class UsersGridComponent implements OnInit {
         event.currentIndex
       );
     } else {
-      transferArrayItem(
-        event.previousContainer.data,
-        event.container.data,
-        event.previousIndex,
-        event.currentIndex
-      );
+      const userName = _.replace(event.container.id, '_gridItems', '');
+      const gridItemIndex = this.gridItems.findIndex(gi => gi.name === userName);
+      const tasks = this.gridItems[gridItemIndex].gridTimelineItems.filter(gtli => gtli.data).map(gtli => gtli.data);
+      tasks.push(event.previousContainer.data[event.previousIndex].data);
+      this.gridItems[gridItemIndex].gridTimelineItems = UserGridHelper.getUserGridTimelineItems(tasks);
     }
   }
 
@@ -60,14 +58,7 @@ export class UsersGridComponent implements OnInit {
     return false;
   }
 
-  mapTasks(tasks: Task[]): GridItem[] {
-    console.log(UserGridHelper.getUserGridItems(tasks));
-    return UserGridHelper.getUserGridItems(tasks);
-  }
-
-
-
-  getGridItemStyles(gridItem: GridItem): any {
+  getGridItemStyles(gridItem: GridTimelineItem): any {
     const styles = {
       width: gridItem.width,
       height: gridItem.height ? gridItem.height : '100%'
@@ -77,6 +68,6 @@ export class UsersGridComponent implements OnInit {
   }
 
   get GridItemType() {
-    return GridItemType;
+    return GridTimelineItemType;
   }
 }

@@ -1,20 +1,21 @@
 <div>
-  <div id="pendingTasks" class="c-usersGrid__pendingTasksList">
-    <div
-      class="c-usersGrid__task c-usersGrid__task--pending"
-      *ngFor="let task of pendingTasks"
-      [cdkDragData]="task"
-      cdkDrag
-    >
-
-    <!-- cdkDropList
-    [cdkDropListData]="pendingTasks"
-    [cdkDropListConnectedTo]="pendingTasksConnectedTo"
+  <div
+    id="pendingTasks"
+    class="c-usersGrid__pendingTasksList"
+    cdkDropList
+    [cdkDropListData]="pendingTimelineItems"
+    [cdkDropListConnectedTo]="gridItemsConnectedTo"
     cdkDropListSortingDisabled
     (cdkDropListDropped)="drop($event)"
-    [cdkDropListEnterPredicate]="noReturnPredicate" -->
-
-      {{ task.name }}
+    [cdkDropListEnterPredicate]="noReturnPredicate"
+  >
+    <div
+      class="c-usersGrid__task c-usersGrid__task--pending"
+      *ngFor="let pendingItem of pendingTimelineItems"
+      [cdkDragData]="pendingItem"
+      cdkDrag
+    >
+      {{ pendingItem.name }}
     </div>
   </div>
 </div>
@@ -36,25 +37,30 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let user of users">
-      <td class="c-usersGrid__cell c-usersGrid__userName">{{ user.name }}</td>
-      <td class="c-usersGrid__cell c-usersGrid__area">{{ user.areas }}</td>
+    <tr *ngFor="let gridItem of gridItems">
+      <td class="c-usersGrid__cell c-usersGrid__userName">
+        {{ gridItem.name }}
+      </td>
+      <td class="c-usersGrid__cell c-usersGrid__area">{{ gridItem.areas }}</td>
       <td colspan="10">
-        <div id="{{ user.id }}_userTasks" class="c-usersGrid__userTasksList">
-          <!-- cdkDropList
-          [cdkDropListData]="user.tasks"
-          [cdkDropListConnectedTo]="pendingTasksConnectedTo"
+        <div
+          id="{{ gridItem.name }}_gridItems"
+          class="c-usersGrid__userTasksList"
+          cdkDropList
+          [cdkDropListData]="gridItem.gridTimelineItems"
+          [cdkDropListConnectedTo]="gridItemsConnectedTo"
           (cdkDropListDropped)="drop($event)"
-          [cdkDropListEnterPredicate]="evenPredicate" -->
+          [cdkDropListEnterPredicate]="evenPredicate"
+        >
           <div
-            *ngFor="let gridItem of mapTasks(user.tasks)"
-            [ngStyle]="getGridItemStyles(gridItem)"
+            *ngFor="let gridTimelineItem of gridItem.gridTimelineItems"
+            [ngStyle]="getGridItemStyles(gridTimelineItem)"
             class="c-usersGrid__task c-usersGrid__task--user"
+            cdkDrag
+            [cdkDragData]="gridTimelineItem"
+            [cdkDragDisabled]="gridTimelineItem.type === GridItemType.timeGap ? '' : null"
           >
-            <!-- cdkDrag
-            [cdkDragData]="gridItem.data"
-            [cdkDragDisabled]="gridItem.type === GridItemType.timeGap ? '' : null" -->
-            {{ gridItem.text }}
+            {{ gridTimelineItem.name }}
           </div>
         </div>
       </td>

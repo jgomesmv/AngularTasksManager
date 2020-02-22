@@ -16,6 +16,6 @@ export class FilterPipe implements PipeTransform {
             item.hasOwnProperty(key) && new RegExp(term, 'gi').test(item[key])
         )
     );
-    return res.length ? res : [-1];
+    return res.length ? res : null;
   }
 }

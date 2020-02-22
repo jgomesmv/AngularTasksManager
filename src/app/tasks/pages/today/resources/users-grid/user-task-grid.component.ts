@@ -1,5 +1,4 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { UserDataSource } from 'src/app/core/data-sources/user-data-source/user.data-source';
 import { User } from 'src/app/core/models/user/user';
 import _ from 'lodash';
 import {

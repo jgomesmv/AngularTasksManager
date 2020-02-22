@@ -7,14 +7,29 @@
         type="text"
         formControlName="username"
         class="p-login__formControl"
-        [ngClass]="{ 'is-invalid': submitted && formControls.username.errors }"
       />
       <div
-        *ngIf="submitted && formControls.username.errors"
+        *ngIf="formControls.username.invalid && (formControls.username.dirty || formControls.username.touched)"
         class="p-login__invalidFeedback"
       >
         <div *ngIf="formControls.username.errors.required">
           Username is required
+        </div>
+      </div>
+    </div>
+    <div class="p-login__formGroup">
+      <label for="postCode">Post Code:</label>
+      <input
+        type="text"
+        formControlName="postCode"
+        class="p-login__formControl"
+      />
+      <div
+        *ngIf="formControls.postCode.invalid && (formControls.postCode.dirty || formControls.postCode.touched)"
+        class="p-login__invalidFeedback"
+      >
+        <div *ngIf="formControls.postCode.errors.required">
+          Post Code is required
         </div>
       </div>
     </div>
@@ -24,14 +39,17 @@
         type="password"
         formControlName="password"
         class="p-login__formControl"
-        [ngClass]="{ 'is-invalid': submitted && formControls.password.errors }"
+        minlength="8"
       />
       <div
-        *ngIf="submitted && formControls.password.errors"
+        *ngIf="formControls.password.invalid && (formControls.password.dirty || formControls.password.touched)"
         class="p-login__invalidFeedback"
       >
         <div *ngIf="formControls.password.errors.required">
           Password is required
+        </div>
+        <div *ngIf="formControls.password.errors.minlength">
+          Password min length 8 characters
         </div>
       </div>
     </div>

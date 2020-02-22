@@ -1,1 +1,44 @@
-<p>login page works!</p>
+<section class="p-login__container">
+  <h2>Login</h2>
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <div class="p-login__formGroup">
+      <label for="username">Username:</label>
+      <input
+        type="text"
+        formControlName="username"
+        class="p-login__formControl"
+        [ngClass]="{ 'is-invalid': submitted && formControls.username.errors }"
+      />
+      <div
+        *ngIf="submitted && formControls.username.errors"
+        class="p-login__invalidFeedback"
+      >
+        <div *ngIf="formControls.username.errors.required">
+          Username is required
+        </div>
+      </div>
+    </div>
+    <div class="p-login__formGroup">
+      <label for="password">Password:</label>
+      <input
+        type="password"
+        formControlName="password"
+        class="p-login__formControl"
+        [ngClass]="{ 'is-invalid': submitted && formControls.password.errors }"
+      />
+      <div
+        *ngIf="submitted && formControls.password.errors"
+        class="p-login__invalidFeedback"
+      >
+        <div *ngIf="formControls.password.errors.required">
+          Password is required
+        </div>
+      </div>
+    </div>
+    <div class="p-login__formGroup">
+      <button class="p-login__button">
+        Login
+      </button>
+    </div>
+  </form>
+</section>

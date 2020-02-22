@@ -1,15 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { SelectListItem } from '../../models/select-list-item/select-list-item';
 
 @Component({
-  selector: 'app-dropdown-filter',
+  selector: 'dropdown-filter',
   templateUrl: './dropdown-filter.component.html',
-  styleUrls: ['./dropdown-filter.component.scss']
+  styleUrls: ['./dropdown-filter.component.scss'],
+  host: { class: 'c-dropdown-filter' }
 })
 export class DropdownFilterComponent implements OnInit {
+  @Input() selectList: SelectListItem[] = [];
+  @Output() public valueSelected = new EventEmitter<string>();
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit(): void {
+  ngOnInit(): void {}
+
+  onValueChanged(value: string): void {
+    this.valueSelected.emit(value);
   }
-
 }

@@ -1,1 +1,8 @@
-<p>dropdown-filter works!</p>
+<select (change)="onValueChanged($event.target.value)">
+  <option
+    *ngFor="let selectListItem of selectList"
+    [value]="selectListItem.value"
+    [selected]="selectListItem.selected"
+    >{{ selectListItem.text }}</option>
+  <option value="">Please Select...</option>
+</select>

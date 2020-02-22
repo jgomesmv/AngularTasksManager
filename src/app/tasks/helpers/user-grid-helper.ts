@@ -10,7 +10,7 @@ export class UserGridHelper {
     const tasksByStartsAtAsc: Task[] = _.orderBy(
       tasks,
       (task: Task) => {
-        return task.endsAt.toDate();
+        return task.startsAt.toDate();
       },
       ['asc']
     );
@@ -125,12 +125,12 @@ export class UserGridHelper {
   }
 
   private static getNumberOfCrossTasks(currentTask: Task, tasks: Task[], sum: number = 0) {
-    const tasksToCheck = tasks.filter(task => task.name !== currentTask.name);
-    for (const task of tasksToCheck) {
+    for (const task of tasks) {
+      const tasksToCheck = tasks.filter(t => t.name !== task.name);
       if (this.datesCross(task, currentTask)) {
         sum = sum + 1;
-        this.getNumberOfCrossTasks(task, tasksToCheck, sum);
       }
+      this.getNumberOfCrossTasks(task, tasksToCheck, sum);
     }
     return sum;
   }

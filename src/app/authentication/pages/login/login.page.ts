@@ -28,7 +28,7 @@ export class LoginPage implements OnInit {
     this.loginForm = this.formBuilder.group({
       username: ['', Validators.required],
       postCode: ['', Validators.required],
-      password: ['', Validators.required, Validators.minLength(8)]
+      password: ['', [Validators.required, Validators.minLength(8)]]
     });
 
     const returnUrlKey = 'returnUrl';

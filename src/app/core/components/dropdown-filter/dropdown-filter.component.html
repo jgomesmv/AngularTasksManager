@@ -1,4 +1,4 @@
-<select (change)="onValueChanged($event.target.value)">
+<select class="c-dropdownFilter__select" (change)="onValueChanged($event.target.value)">
   <option
     *ngFor="let selectListItem of selectList"
     [value]="selectListItem.value"

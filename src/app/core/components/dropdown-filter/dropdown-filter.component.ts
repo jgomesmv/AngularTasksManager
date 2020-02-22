@@ -5,11 +5,11 @@ import { SelectListItem } from '../../models/select-list-item/select-list-item';
   selector: 'dropdown-filter',
   templateUrl: './dropdown-filter.component.html',
   styleUrls: ['./dropdown-filter.component.scss'],
-  host: { class: 'c-dropdown-filter' }
+  host: { class: 'c-dropdownFilter' }
 })
 export class DropdownFilterComponent implements OnInit {
   @Input() selectList: SelectListItem[] = [];
-  @Output() public valueSelected = new EventEmitter<string>();
+  @Output() valueSelected = new EventEmitter<string>();
 
   constructor() {}
 

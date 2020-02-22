@@ -10,7 +10,7 @@ const routes: Routes = [
       )
   },
   {
-    path: 'tasks',
+    path: 'today',
     loadChildren: () => import('./tasks/tasks.module').then(m => m.TasksModule)
   }
 ];

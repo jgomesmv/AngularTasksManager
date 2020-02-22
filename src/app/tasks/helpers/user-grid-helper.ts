@@ -33,7 +33,7 @@ export class UserGridHelper {
       const timeLeftBeforeMinutes = timeLeftBefore.asMinutes();
       if (timeLeftBeforeMinutes > 0) {
         const gridItemBefore = new GridTimelineItem({
-          name: timeLeftBefore.humanize(),
+          name: this.getDurationTimeString(timeLeftBefore),
           width: this.getDurationPercentage(timeLeftBeforeMinutes),
           height: null,
           type: GridTimelineItemType.timeGap,
@@ -58,7 +58,7 @@ export class UserGridHelper {
         const timeLeftAfterMinutes = timeLeftAfter.asMinutes();
         if (timeLeftAfterMinutes > 0) {
           const gridItemBefore = new GridTimelineItem({
-            name: timeLeftAfter.humanize(),
+            name: this.getDurationTimeString(timeLeftAfter),
             width: this.getDurationPercentage(timeLeftAfterMinutes),
             height: null,
             type: GridTimelineItemType.timeGap,
@@ -142,5 +142,18 @@ export class UserGridHelper {
       task.startsAt.isBetween(taskCheck.startsAt, taskCheck.endsAt) ||
       task.endsAt.isBetween(taskCheck.startsAt, taskCheck.endsAt)
     );
+  }
+
+  private static getDurationTimeString(duration: moment.Duration): string {
+    const hours = this.formatDurationInt(duration.hours());
+    const minutes = this.formatDurationInt(duration.minutes());
+    return `${hours}:${minutes}m`;
+  }
+
+  private static formatDurationInt(int: number): string {
+    if (int < 10) {
+      return `0${int}`;
+    }
+    return `${int}`;
   }
 }

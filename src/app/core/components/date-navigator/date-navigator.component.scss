@@ -1,0 +1,9 @@
+.c-dateNavigator {
+  &:host {
+    display: flex;
+    padding: 5px;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid black;
+  }
+}

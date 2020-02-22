@@ -1,31 +1,34 @@
 <section class="c-usersGrid__header">
+  <date-navigator class="c-usersGrid__dateNavigator"></date-navigator>
   <div class="c-usersGrid__filters">
     <text-filter
-      class="c-usersGrid__filter"
+      class="c-usersGrid__filterName"
       (filterChanged)="volunteerNameFilterChanged($event)"
     ></text-filter>
-    <dropdown-filter
-      class="c-usersGrid__filter"
+    <dropdown-filter>
       (valueSelected)="groupNameFilterChanged($event)"
       [selectList]="groupSelectList"
-    ></dropdown-filter>
+    </dropdown-filter>
   </div>
-  <div
-    id="pendingTasks"
-    class="c-usersGrid__pendingTasksList"
-    cdkDropList
-    [cdkDropListData]="pendingTimelineItems"
-    [cdkDropListConnectedTo]="gridItemsConnectedTo"
-    cdkDropListSortingDisabled
-    (cdkDropListDropped)="drop($event)"
-  >
+  <div class="c-usersGrid__pendingTasks">
+    <label class="c-usersGrid__pendingTasksListLabel">Pending Tasks</label>
     <div
-      class="c-usersGrid__task c-usersGrid__task--pending"
-      *ngFor="let pendingItem of pendingTimelineItems"
-      [cdkDragData]="pendingItem"
-      cdkDrag
+      id="pendingTasks"
+      class="c-usersGrid__pendingTasksList"
+      cdkDropList
+      [cdkDropListData]="pendingTimelineItems"
+      [cdkDropListConnectedTo]="gridItemsConnectedTo"
+      cdkDropListSortingDisabled
+      (cdkDropListDropped)="drop($event)"
     >
-      {{ pendingItem.name }}
+      <div
+        class="c-usersGrid__task c-usersGrid__task--pending"
+        *ngFor="let pendingItem of pendingTimelineItems"
+        [cdkDragData]="pendingItem"
+        cdkDrag
+      >
+        {{ pendingItem.name }}
+      </div>
     </div>
   </div>
 </section>

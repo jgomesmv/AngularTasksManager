@@ -1,18 +1,25 @@
 .c-usersGrid {
   &__header {
     display: flex;
-    width: 100%;
+    margin: 8px;
+    max-width: 100vw;
     flex-direction: row;
+  }
+
+  &__dateNavigator {
+    width: 12%;
   }
 
   &__filters {
     display: flex;
+    margin: 0 5px;
     width: 18%;
     flex-direction: column;
   }
 
-  &__filter {
-    margin: 0 5px 5px;
+  &__filterName {
+    margin-bottom: 5px;
+    height: 38px;
   }
 
   &__table {
@@ -45,17 +52,27 @@
     flex-grow: 1;
   }
 
+  &__pendingTasks {
+    display: flex;
+    width: 70%;
+    justify-content: space-between;
+    border: 2px solid black;
+  }
+
   &__pendingTasksList {
     display: flex;
     max-width: 548px;
-    width: 40%;
-    height: 112px;
+    width: 78%;
+    height: 80px;
     flex-direction: row;
     flex-wrap: wrap;
     overflow: hidden;
     overflow-y: visible;
-    border: solid 2px black;
     background: white;
+  }
+
+  &__pendingTasksListLabel {
+    padding: 5px 5px 0;
   }
 
   &__userTasksList {

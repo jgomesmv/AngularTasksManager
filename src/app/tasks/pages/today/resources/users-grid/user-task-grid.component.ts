@@ -78,16 +78,16 @@ export class UserTaskGridComponent implements OnInit {
   }
 
   private setGroupSelectList(): void {
-    const groupSelectList = [];
+    const selectList = [];
     this.groups.forEach(group =>
-      groupSelectList.push(
+      selectList.push(
         new SelectListItem({
           text: group,
           value: group
         })
       )
     );
-    this.groupSelectList = groupSelectList;
+    this.groupSelectList = selectList;
   }
 
   private addToTargetContainer(

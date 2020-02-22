@@ -57,11 +57,11 @@
           | filter: 'groups':groupFilterValue
       "
     >
-      <td class="c-usersGrid__cell c-usersGrid__userName">
+      <td class="c-usersGrid__cell c-usersGrid__cell--userName">
         {{ gridItem.name }}
       </td>
-      <td class="c-usersGrid__cell c-usersGrid__area">{{ gridItem.areas }}</td>
-      <td colspan="10">
+      <td class="c-usersGrid__cell c-usersGrid__cell--area">{{ gridItem.areas }}</td>
+      <td class="c-usersGrid__cell c-usersGrid__cell--timeLine" colspan="10">
         <div
           id="{{ gridItem.name }}_gridItems"
           class="c-usersGrid__userTasksList"

@@ -34,16 +34,20 @@
     &--header {
       padding: 0;
     }
-  }
 
-  &__userName {
-    width: 10%;
-    text-align: center;
-  }
+    &--userName {
+      width: 10%;
+      text-align: center;
+    }
 
-  &__area {
-    width: 5%;
-    text-align: center;
+    &--area {
+      width: 5%;
+      text-align: center;
+    }
+
+    &--timeLine {
+      padding: 2px;
+    }
   }
 
   &__minutes {
@@ -84,7 +88,6 @@
     align-content: stretch;
     align-items: stretch;
     // overflow: hidden;
-    border: solid 2px black;
   }
 
   &__task {

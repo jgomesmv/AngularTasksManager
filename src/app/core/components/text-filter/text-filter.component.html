@@ -1,1 +1,9 @@
-<p>text-filter works!</p>
+<div>
+  <label class="c-textFilter__label" for="filter">Volunteer:</label>
+  <input
+    id="filter"
+    class="c-textFilter__input"
+    (input)="onfilterChanged($event.target.value)"
+    type="text"
+  />
+</div>

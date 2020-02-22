@@ -7,6 +7,7 @@ import { map } from 'rxjs/operators';
 import { UserGridHelper } from '../helpers/user-grid-helper';
 import { TaskService } from 'src/app/core/services/task/task.service';
 import { GridTimelineItem } from '../models/grid-timeline-item';
+import { GroupService } from 'src/app/core/services/group/group.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,20 +15,24 @@ import { GridTimelineItem } from '../models/grid-timeline-item';
 export class GridItemResolver implements Resolve<GridItem[]> {
   constructor(
     private userService: UserService,
-    private taskService: TaskService
+    private taskService: TaskService,
+    private groupService: GroupService
   ) {}
 
   resolve(): Observable<any> {
     return forkJoin([
       this.userService.get(),
-      this.taskService.getPendingTasks()
+      this.taskService.getPendingTasks(),
+      this.groupService.get()
     ]).pipe(
       map(result => {
         return {
           gridItems: result[0].map(user => {
             const gridItem = new GridItem({});
             gridItem.name = user.name;
+            gridItem.email = user.email;
             gridItem.areas = user.areas;
+            gridItem.groups = user.groups;
             gridItem.gridTimelineItems = UserGridHelper.getUserGridTimelineItems(
               user.tasks
             );
@@ -38,7 +43,8 @@ export class GridItemResolver implements Resolve<GridItem[]> {
             gridTimelineItem.name = pendingTask.name;
             gridTimelineItem.data = pendingTask;
             return gridTimelineItem;
-          })
+          }),
+          groups: result[2]
         };
       })
     );

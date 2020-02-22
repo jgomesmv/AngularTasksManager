@@ -1,4 +1,15 @@
-<div>
+<section class="c-usersGrid__header">
+  <div class="c-usersGrid__filters">
+    <text-filter
+      class="c-usersGrid__filter"
+      (filterChanged)="volunteerNameFilterChanged($event)"
+    ></text-filter>
+    <dropdown-filter
+      class="c-usersGrid__filter"
+      (valueSelected)="groupNameFilterChanged($event)"
+      [selectList]="groupSelectList"
+    ></dropdown-filter>
+  </div>
   <div
     id="pendingTasks"
     class="c-usersGrid__pendingTasksList"
@@ -7,7 +18,6 @@
     [cdkDropListConnectedTo]="gridItemsConnectedTo"
     cdkDropListSortingDisabled
     (cdkDropListDropped)="drop($event)"
-    [cdkDropListEnterPredicate]="noReturnPredicate"
   >
     <div
       class="c-usersGrid__task c-usersGrid__task--pending"
@@ -18,7 +28,7 @@
       {{ pendingItem.name }}
     </div>
   </div>
-</div>
+</section>
 <table class="c-usersGrid__table">
   <thead>
     <tr>
@@ -37,7 +47,13 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let gridItem of gridItems">
+    <tr
+      *ngFor="
+        let gridItem of gridItems
+          | filter: 'name,email':nameFilterValue
+          | filter: 'groups':groupFilterValue
+      "
+    >
       <td class="c-usersGrid__cell c-usersGrid__userName">
         {{ gridItem.name }}
       </td>
@@ -50,7 +66,6 @@
           [cdkDropListData]="gridItem.gridTimelineItems"
           [cdkDropListConnectedTo]="gridItemsConnectedTo"
           (cdkDropListDropped)="drop($event)"
-          [cdkDropListEnterPredicate]="evenPredicate"
         >
           <div
             *ngFor="let gridTimelineItem of gridItem.gridTimelineItems"
@@ -58,7 +73,9 @@
             class="c-usersGrid__task c-usersGrid__task--user"
             cdkDrag
             [cdkDragData]="gridTimelineItem"
-            [cdkDragDisabled]="gridTimelineItem.type === GridItemType.timeGap ? '' : null"
+            [cdkDragDisabled]="
+              gridTimelineItem.type === GridItemType.timeGap ? '' : null
+            "
           >
             {{ gridTimelineItem.name }}
           </div>

@@ -14,15 +14,16 @@ import { GridTimelineItem } from '../../models/grid-timeline-item';
 export class TodayPage implements OnInit {
   gridItems: GridItem[] = [];
   pendingTimelineItems: GridTimelineItem[] = [];
+  groups: string[] = [];
 
-  constructor(
-    private route: ActivatedRoute
-  ) {
+  constructor(private route: ActivatedRoute) {
     this.route.data.subscribe(
       data => {
         // .filter(user => user.name === 'John 0.odev7ed0pse')
         this.gridItems = data.resolved.gridItems as GridItem[];
-        this.pendingTimelineItems = data.resolved.pendingTimelineItems as GridTimelineItem[];
+        this.pendingTimelineItems = data.resolved
+          .pendingTimelineItems as GridTimelineItem[];
+        this.groups = data.resolved.groups;
       },
       error => {
         console.log(error);
@@ -30,6 +31,5 @@ export class TodayPage implements OnInit {
     );
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 }

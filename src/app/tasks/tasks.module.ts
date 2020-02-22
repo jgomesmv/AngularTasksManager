@@ -4,12 +4,13 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 
 import { TasksRoutingModule } from './tasks-routing.module';
 import { TodayPage } from './pages/today/today.page';
-import { UsersGridComponent } from './pages/today/resources/users-grid/users-grid.component';
+import { UserTaskGridComponent } from './pages/today/resources/users-grid/user-task-grid.component';
 import { StandbyTasksComponent } from './pages/today/resources/standby-tasks/standby-tasks.component';
+import { CoreModule } from '../core/core.module';
 
 @NgModule({
-  declarations: [TodayPage, UsersGridComponent, StandbyTasksComponent],
-  imports: [CommonModule, TasksRoutingModule, DragDropModule],
-  exports: [UsersGridComponent]
+  declarations: [TodayPage, UserTaskGridComponent, StandbyTasksComponent],
+  imports: [CommonModule, TasksRoutingModule, DragDropModule, CoreModule],
+  exports: [UserTaskGridComponent]
 })
 export class TasksModule {}

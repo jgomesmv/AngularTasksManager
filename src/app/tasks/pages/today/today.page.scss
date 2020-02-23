@@ -1,0 +1,13 @@
+.p-today {
+  &__menus {
+    width: 100%;
+    height: 35px;
+  }
+
+  &__logoutButton {
+    margin-right: 8px;
+    padding: 10px;
+    width: 150px;
+    float: right;
+  }
+}

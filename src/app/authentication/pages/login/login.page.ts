@@ -26,8 +26,8 @@ export class LoginPage implements OnInit {
 
   ngOnInit() {
     this.loginForm = this.formBuilder.group({
-      username: ['', Validators.required],
-      postCode: ['', Validators.required],
+      username: ['', [Validators.required, Validators.email]],
+      postCode: ['', [Validators.required, Validators.pattern('^[0-9]{4}(?:-[0-9]{3})?$')]],
       password: ['', [Validators.required, Validators.minLength(8)]]
     });
 
@@ -48,6 +48,7 @@ export class LoginPage implements OnInit {
 
     const isAuthenticated = this.authenticationService.login(
       this.formControls.username.value,
+      this.formControls.postCode.value,
       this.formControls.password.value
     );
 

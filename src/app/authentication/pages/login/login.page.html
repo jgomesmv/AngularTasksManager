@@ -15,6 +15,9 @@
         <div *ngIf="formControls.username.errors.required">
           Username is required
         </div>
+        <div *ngIf="formControls.username.errors.email">
+          Please insert a valid email
+        </div>
       </div>
     </div>
     <div class="p-login__formGroup">
@@ -30,6 +33,9 @@
       >
         <div *ngIf="formControls.postCode.errors.required">
           Post Code is required
+        </div>
+        <div *ngIf="formControls.postCode.errors.pattern">
+          Please insert a valid post code
         </div>
       </div>
     </div>

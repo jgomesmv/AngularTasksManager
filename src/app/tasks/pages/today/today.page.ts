@@ -1,20 +1,20 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { User } from 'src/app/core/models/user/user';
-import { Task } from 'src/app/core/models/task/task';
 import { ActivatedRoute } from '@angular/router';
 import { GridItem } from '../../models/grid-item';
 import { GridTimelineItem } from '../../models/grid-timeline-item';
+import { AuthenticationService } from 'src/app/authentication/services/authentication.service';
 
 @Component({
   templateUrl: './today.page.html',
-  styleUrls: ['./today.page.scss']
+  styleUrls: ['./today.page.scss'],
+  host: {class: 'p-today'}
 })
 export class TodayPage implements OnInit {
   gridItems: GridItem[] = [];
   pendingTimelineItems: GridTimelineItem[] = [];
   groups: string[] = [];
 
-  constructor(private route: ActivatedRoute) {
+  constructor(private route: ActivatedRoute, private authenticationService: AuthenticationService) {
     this.route.data.subscribe(
       data => {
         // .filter(user => user.name === 'John 0.odev7ed0pse')
@@ -30,4 +30,8 @@ export class TodayPage implements OnInit {
   }
 
   ngOnInit() {}
+
+  onLogoutClick(): void {
+    this.authenticationService.logout();
+  }
 }

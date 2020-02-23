@@ -19,7 +19,7 @@ import { GroupService } from 'src/app/core/services/group/group.service';
   selector: 'user-task-grid',
   templateUrl: './user-task-grid.component.html',
   styleUrls: ['./user-task-grid.component.scss'],
-  host: { class: 'c-usersGrid' }
+  host: { class: 'c-userTaskGrid' }
 })
 export class UserTaskGridComponent implements OnInit {
   @Input() gridItems: GridItem[] = [];

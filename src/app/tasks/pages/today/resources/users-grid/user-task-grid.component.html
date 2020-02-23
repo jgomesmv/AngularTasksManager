@@ -57,6 +57,7 @@
         let gridItem of gridItems
           | filter: 'name,email':nameFilterValue
           | filter: 'groups':groupFilterValue
+          | orderBy: 'groups,name':'asc'
       "
     >
       <td class="c-userTaskGrid__cell c-userTaskGrid__cell--userName">

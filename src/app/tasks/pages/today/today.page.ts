@@ -17,7 +17,6 @@ export class TodayPage implements OnInit {
   constructor(private route: ActivatedRoute, private authenticationService: AuthenticationService) {
     this.route.data.subscribe(
       data => {
-        // .filter(user => user.name === 'John 0.odev7ed0pse')
         this.gridItems = data.resolved.gridItems as GridItem[];
         this.pendingTimelineItems = data.resolved
           .pendingTimelineItems as GridTimelineItem[];

@@ -9,27 +9,18 @@ export class UserGridHelper {
   static getUserGridTimelineItems(tasks: Task[]): GridTimelineItem[] {
     const tasksByStartsEndsAtAsc: Task[] = _.orderBy(
       tasks,
-      (task: Task) => {
-        return [task.startsAt.toDate(), task.endedAt.toDate()];
-      },
+      ['startsAt', 'endsAt'],
       ['asc']
     );
 
-    const tasksByEndsAtAsc = _.orderBy(
-      tasks,
-      (task: Task) => {
-        return task.endsAt.toDate();
-      },
-      ['asc']
-    );
-    const lastTask = _.last(tasksByEndsAtAsc);
+    const lastTask = _.last(tasksByStartsEndsAtAsc);
 
     const userGridItems: GridTimelineItem[] = [];
     for (const [index, task] of tasksByStartsEndsAtAsc.entries()) {
       const numberOfCrossTasks = this.getNumberOfCrossTasks(task, tasks);
       const heightPercentage = `${100 / (numberOfCrossTasks || 1)}%`;
 
-      const timeLeftBefore = this.getTimeLeftBefore(task, tasks, index);
+      const timeLeftBefore = this.getTimeLeftBefore(task, tasksByStartsEndsAtAsc, index);
       const timeLeftBeforeMinutes = timeLeftBefore.asMinutes();
       if (timeLeftBeforeMinutes > 0) {
         const gridItemBefore = new GridTimelineItem({
@@ -119,7 +110,11 @@ export class UserGridHelper {
     return `${durationPercentage}`;
   }
 
-  private static getNumberOfCrossTasks(currentTask: Task, tasks: Task[], sum: number = 0) {
+  private static getNumberOfCrossTasks(
+    currentTask: Task,
+    tasks: Task[],
+    sum: number = 0
+  ) {
     for (const task of tasks) {
       const tasksToCheck = tasks.filter(t => t.name !== task.name);
       if (this.tasksCross(task, currentTask)) {

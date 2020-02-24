@@ -1,0 +1,67 @@
+<section class="p-login__container">
+  <h2>Login</h2>
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <div class="p-login__formGroup">
+      <label for="username">Username:</label>
+      <input
+        type="text"
+        formControlName="username"
+        class="p-login__formControl"
+      />
+      <div
+        *ngIf="formControls.username.invalid && (formControls.username.dirty || formControls.username.touched)"
+        class="p-login__invalidFeedback"
+      >
+        <div *ngIf="formControls.username.errors.required">
+          Username is required
+        </div>
+        <div *ngIf="formControls.username.errors.email">
+          Please insert a valid email
+        </div>
+      </div>
+    </div>
+    <div class="p-login__formGroup">
+      <label for="postCode">Post Code:</label>
+      <input
+        type="text"
+        formControlName="postCode"
+        class="p-login__formControl"
+      />
+      <div
+        *ngIf="formControls.postCode.invalid && (formControls.postCode.dirty || formControls.postCode.touched)"
+        class="p-login__invalidFeedback"
+      >
+        <div *ngIf="formControls.postCode.errors.required">
+          Post Code is required
+        </div>
+        <div *ngIf="formControls.postCode.errors.pattern">
+          Please insert a valid post code
+        </div>
+      </div>
+    </div>
+    <div class="p-login__formGroup">
+      <label for="password">Password:</label>
+      <input
+        type="password"
+        formControlName="password"
+        class="p-login__formControl"
+      />
+      <div
+        *ngIf="formControls.password.invalid && (formControls.password.dirty || formControls.password.touched)"
+        class="p-login__invalidFeedback"
+      >
+        <div *ngIf="formControls.password.errors.required">
+          Password is required
+        </div>
+        <div *ngIf="formControls.password.errors.minlength">
+          Password min length 8 characters
+        </div>
+      </div>
+    </div>
+    <div class="p-login__formGroup">
+      <button class="p-login__button">
+        Login
+      </button>
+    </div>
+  </form>
+</section>

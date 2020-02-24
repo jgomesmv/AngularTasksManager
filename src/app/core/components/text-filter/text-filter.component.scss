@@ -1,0 +1,29 @@
+.c-textFilter {
+  &:host {
+    display: flex;
+    min-height: 28px;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid black;
+  }
+
+  &__label {
+    margin: 2px;
+    margin-right: 4px;
+  }
+
+  &__input {
+    margin: 0;
+    margin-top: 0;
+    padding: 0;
+    max-width: 235px;
+    width: 50%;
+    border: none;
+    border-bottom: 1px solid black;
+    outline: 0;
+    background: 0 0;
+    color: currentColor;
+    vertical-align: bottom;
+    font: inherit;
+  }
+}

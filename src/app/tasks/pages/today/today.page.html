@@ -1,0 +1,8 @@
+<div class="p-today__menus">
+  <button class="p-today__logoutButton" (click)="onLogoutClick()">Logout</button>
+</div>
+<user-task-grid
+  [gridItems]="gridItems"
+  [pendingTimelineItems]="pendingTimelineItems"
+  [groups]="groups"
+></user-task-grid>
